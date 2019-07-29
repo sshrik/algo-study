@@ -1,12 +1,12 @@
 #include<stdio.h>
 #include<string.h>
 
-int checkUpper(int * grade, int N, float mid);
+int checkUpper(int * grade, int N, double mid);
 
 int main()	{
 	int T, t, N, n, total;
 	int grade[1000];
-	float mid, per;
+	double mid, per;
 
 	scanf(" %d", &T);
 	for(t = 0; t < T; t++) {
@@ -18,18 +18,18 @@ int main()	{
 			scanf(" %d", &grade[n]);
 			total += grade[n];		
 		}
-		mid = (float)total / (float)N;
-		per = ((float)checkUpper(grade, N, mid) / (float)N ) * 100;
-		printf("%.3f\n", per);
+		mid = (double)((double)total / (double)N);
+		per = (double)((double)checkUpper(grade, N, mid) / (double)N) * 100;
+		printf("%.3lf\n", per);
 	}
 
 	return 0;
 }
 
-int checkUpper(int * grade, int N, float mid)	{
+int checkUpper(int * grade, int N, double mid)	{
 	int i, res = 0;
 	for(i = 0; i < N; i++) {
-		if((float)grade[i] > mid) res++;
+		if((double)grade[i] > mid) res++;
 	}
 	return res;
 }
