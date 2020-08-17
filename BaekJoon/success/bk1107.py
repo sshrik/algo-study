@@ -1,6 +1,60 @@
 import sys
 
 NOW_CHANNEL = 100
+CHANNEL_MAX = 1000000   # 500,000 가 최대지만, 그보다 높은 수가 나올 수 있기 떄문에 1,000,000을 최대로 한다.
+
+def check_makable(N, broken_list):
+    str_N = str(N)
+
+    # N 을 구성하는 모든 수가 가능한 리스트에 있는지 확인.
+    for n in str_N:
+        if broken_list[int(n)]:
+            return False
+    
+    return True
+
+if __name__ == "__main__":
+    # For fast I / O. T mean test case number.
+    N = int(sys.stdin.readline().rstrip())
+    M = int(sys.stdin.readline().rstrip())
+    broken_list = [False for _ in range(0, 10)]
+
+    if M != 0:
+        inp = sys.stdin.readline().rstrip().split(" ")
+        for i in inp:
+            broken_list[int(i)] = True
+
+    if N >= 10:
+        low_bound = 10 ** (len(str(N)) - 2)
+        upper_bound = 10 ** len(str(N))
+    else:
+        low_bound = 0
+        upper_bound = 100
+    
+    # Low, Upper bound 를 쓰는 방식은 오류가 있다고 한다. 이유는 왤까?
+    print(" ==== ")
+    print(low_bound)
+    print(upper_bound)
+    print(N)
+    print(" ==== ")
+
+    min_answer = abs(100 - N)
+
+    for n in range(0, CHANNEL_MAX):
+        if check_makable(n, broken_list):
+            # 만약 만들 수 있는 숫자라면 버튼 누르는 횟수 계산.
+            answer = len(str(n)) + abs(n - N)
+            if answer < min_answer:
+                min_answer = answer
+
+    print(min_answer)
+    
+
+# 이하는 실패했던 코드들.
+
+import sys
+
+NOW_CHANNEL = 100
 CHANNEL_MAX = 500000
 '''
 에러인 경우는 아래가 있다.
@@ -53,7 +107,8 @@ if __name__ == "__main__":
                 dec_all_list += dec_list[n][i]
             n += 1
         
-        # 가능성 있는 숫자를 찾아낸다.
+        # 가능성 있는 숫자를 찾아낸다. 
+        # Upper bound 를 쓰면 더 빠르게 찾을 수 있긴 하지만, 50만개는 적은 수라 그대로 둬도 상관 없을듯.
         pivot = 0
         for i in range(0, len(dec_all_list)):
             if int(dec_all_list[i]) > N:
@@ -77,6 +132,6 @@ if __name__ == "__main__":
             else:
                 print(btn_touch2 if btn_touch2 < only_plus_minus else only_plus_minus)
         else:
-            btn_touch = digit_same
+            btn_touch = digit_sameㅉ
             btn_touch += N - digit_same_num if N > digit_same_num else digit_same_num - N
             print(btn_touch if btn_touch < only_plus_minus else only_plus_minus)
