@@ -2,6 +2,18 @@ import sys
 
 NOW_CHANNEL = 100
 CHANNEL_MAX = 500000
+'''
+에러인 경우는 아래가 있다.
+1. digit 에서 차이가 나는 경우.
+    ex ) 1555 [0, 1, 3, 4, 5, 6, 7, 9] => 888 과 2222를 통해 비교 하면 됨.
+    ex ) 162 [0, 1, 3, 4, 5, 6, 7, 8, 9] => 22 랑 222를 통해 비교 하면 됨.
+2. + 와 - 만 누르는게 더 빠른 경우
+    ex ) 101 같은 경우
+3. 0에서 시작 혹은 100에서 시작해서 내렸다가 올렸다 하는게 더 빠른 경우.
+    ex ) 10 [1, 2, 3, 4, 5, 6, 7, 8, 9] => 0 에서 시작 혹은 100에서 시작.
+4. 버튼을 모두 쓰거나 모두 못쓰는 경우.
+'''
+
 
 if __name__ == "__main__":
     # For fast I / O. T mean test case number.
@@ -20,6 +32,8 @@ if __name__ == "__main__":
 
     if M == 10:
         print(only_plus_minus)
+    elif M == 0:
+        print(len(str(N)))
     elif N == 100:
         print(0)
     else:
@@ -39,17 +53,14 @@ if __name__ == "__main__":
                 dec_all_list += dec_list[n][i]
             n += 1
         
+        # 가능성 있는 숫자를 찾아낸다.
         pivot = 0
         for i in range(0, len(dec_all_list)):
             if int(dec_all_list[i]) > N:
                 pivot = i
                 break
 
-        try:
-            print(dec_all_list[pivot])
-            print(dec_all_list[pivot - 1])
-        except:
-            pass
+        # 같은 자릿수와 한 자릿수 더 작은 수를 비교.
         digit_same_num = int(dec_all_list[pivot])   # Larger number then given N.
         digit_same = len(dec_all_list[pivot])
         if pivot != 0:
