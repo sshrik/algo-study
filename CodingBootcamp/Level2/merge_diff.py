@@ -10,3 +10,4 @@ if __name__ == "__main__":
     for _ in range(0, n):
         inp = sys.stdin.readline().rstrip().split(" ")
         input_set.append((int(inp[0]), int(inp[1])))    # Add diff set.
+        
