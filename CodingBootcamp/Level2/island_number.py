@@ -63,5 +63,4 @@ if __name__ == "__main__":
                 dfs(inp_map, visited, n, m, x, y)
                 continent += 1
 
-
     print(continent)
