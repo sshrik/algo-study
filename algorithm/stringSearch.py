@@ -1,8 +1,6 @@
-import sys
 import random
 import string
 import time
-import math
 
 STRING_SIZE = 1000000
 WORD_MAX_SIZE = 10000
