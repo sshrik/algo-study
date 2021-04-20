@@ -30,6 +30,13 @@ def get_candidate(row_a, col_a, left_up_a, right_up_a, before_x, before_y, N):
             candidate.append((x, i))
     return candidate
 
+def get_next_candidate(row_a, col_a, left_up_a, right_up_a, before_x, before_y, N):
+    for i in range(before_y + 1, N):
+        if can_put(row_a, col_a, left_up_a, right_up_a, before_x, i, N):
+            return (before_x, i)
+    return (-1, -1)
+
+
 def solution(n):
     answer = 0
     # Make available.
@@ -76,6 +83,50 @@ def solution(n):
 
     return answer
 
+def count_solution(n):
+    answer = []
+    # Make available.
+    row_a = [True] * n
+    col_a = [True] * n
+    left_up_a = [True] * (2*n - 1)
+    right_up_a = [True] * (2*n - 1)
+
+    first_candidate = []
+    for i in range(n):
+        first_candidate.append((0, i))
+        
+    solution_stack = [(0, -1)]
+    if n == 1:
+        return 1
+
+    while solution_stack:
+        if len(solution_stack) == n:
+            print(solution_stack)
+        now = solution_stack[-1]
+        del solution_stack[-1]
+        
+        if now[1] != -1:
+            unset_put(row_a, col_a, left_up_a, right_up_a, now[0], now[1], n)   # 이전 좌표가 set 되었다면 해제해줌.
+
+        next_cand = get_next_candidate(row_a, col_a, left_up_a, right_up_a, now[0], now[1], n)  # 현재 ( x, y ) 보다 큰 다음 ( x, y` ) 가능 좌표를 구함.
+        
+
+        (bef_x, bef_y) = next_cand
+        if bef_y != -1:
+            set_put(row_a, col_a, left_up_a, right_up_a, bef_x, bef_y, n)
+            solution_stack.append(next_cand)
+        else:
+            continue
+
+        if len(solution_stack) == n:
+            for i in range(n):
+                ss = solution_stack[i]
+                answer.append(ss[1])
+            return answer
+        
+        solution_stack.append((bef_x + 1, -1)) 
+
+    return answer
+
 if __name__ == "__main__":
-    for n in range(1, 12):
-        print(solution(n))
+    print(count_solution(50))
