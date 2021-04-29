@@ -1,54 +1,34 @@
-def canPicked(startTime, takingTime, pickedList, pickCandidate):
-    for i in range(0, len(pickedList)):
-        if startTime[pickedList[i]] < startTime[pickCandidate] < startTime[pickedList[i]] + takingTime[pickedList[i]]:
-            return False
-        elif startTime[pickCandidate] < startTime[pickedList[i]] < startTime[pickCandidate] + takingTime[pickCandidate]:
-            return False
-        elif startTime[pickedList[i]] < startTime[pickCandidate] + takingTime[pickCandidate] < startTime[pickedList[i]] + takingTime[pickedList[i]]:
-            return False
-        elif startTime[pickCandidate] < startTime[pickedList[i]] + takingTime[pickedList[i]] < startTime[pickCandidate] + takingTime[pickCandidate]:
-            return False
-    return True
+# https://www.acmicpc.net/problem/1931
+import sys
+fastio = sys.stdin.readline
 
-
-if __name__ == "__main__":
-    n = int(input())
-    startTime = []
-    takingTime = []
-    j = 0
-
-    for i in range(0, n):
-        inp = input().split(" ")
-        start = int(inp[0])
-        taking = int(inp[1]) - int(inp[0])
-        addFlag = False
-        # Count from front to sort with taking time.
-        for j in range(0, i):
-            if takingTime[j] == taking:
-                if startTime[j] >= start:
-                    startTime.insert(j, start)
-                    takingTime.insert(j, taking)
-                    addFlag = True
-                    break
-            elif takingTime[j] > taking:
-                startTime.insert(j, start)
-                takingTime.insert(j, taking)
-                addFlag = True
-                break
-        if not addFlag:
-            startTime.append(start)
-            takingTime.append(taking)
-
+def is_intersect(now_range, add_range):
+    now_st = now_range[1]
+    now_et = now_range[0]
+    add_st = add_range[1]
+    add_et = add_range[0]
     
-    # print(startTime)
-    # print(takingTime)
+    return now_st < add_st < now_et or now_st < add_et < now_et or add_st < now_st < add_et or add_st < now_et < add_et
 
-    picked = 0
-    pickedList = []
-    for i in range(0, n):
-        if canPicked(startTime, takingTime, pickedList, i):
-            # pickedList.append(i)
-            picked += 1
-    # for i in pickedList:
-        # print(str(startTime[i]) + " ~ " + str(startTime[i] + takingTime[i]))
-    print(picked)
+def check_intersect(now_range, add_range):
+    return now_range <= add_range[1]
+    
+if __name__ == "__main__":
+    N = int(fastio().rstrip())
+    sorted_time = []
+
+    for n in range(N):
+        inp = fastio().rstrip().split(" ")
+        st = int(inp[0])
+        et = int(inp[1])
+        sorted_time.append((et, st, et - st))
+    
+    sorted_time.sort()
+
+    count = 0
+    now_range = -1
+    for n in range(N):
+        if check_intersect(now_range, sorted_time[n]):
+            now_range = sorted_time[n][0]
+            count += 1
+    print(count)
