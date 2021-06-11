@@ -1,0 +1,14 @@
+#container {
+    display: flex;
+    width: 90vw;
+    height: 90vh;
+    justify-content: center;
+    align-items: center;
+}
+
+#body-div {
+    width: 200px;
+    height: 200px;
+    background-color: aqua;
+    cursor:pointer ;
+}
