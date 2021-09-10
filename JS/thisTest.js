@@ -1,37 +1,64 @@
-function aa() {
-    console.log(this.a);
-    console.log(a);
+const props = "windowObj";
+const testObj = {
+    props: "testObj",
+    arrow: () => {
+        const props = 'arrowProps'
+        console.log("[ ARROW FUNCTION ]");
+        console.log("this :", this);
+        console.log("this.props :", this.props);
+        const moreArrow = () => {
+            console.log("[ MORE ARROW FUNCTION ]");
+            console.log("this :", this);
+            console.log("this.props :", this.props);
+        }
+        moreArrow();
+    },
+    func: function() {
+        console.log("[ DEFINE FUNCTION ]");
+        console.log("this :", this);
+        console.log("this.props :", this.props);
+    }
 }
 
-let a = 3;
-
-let aaa = {
-    fu : aa,
-    a : 5
+const arrowObj = {
+    props: "arrowObj",
+    arrow: {
+        props: "moreArrowObj",
+        moreArrow: () => {
+            console.log("[ MORE ARROW FUNCTION ]");
+            console.log("this :", this);
+            console.log("this.props :", this.props);
+            const props = "MORE MORE ARROW"
+            const moreMoreArrow = () => {
+                console.log("[ MORE MORE ARROW FUNCTION ]");
+                console.log("this :", this);
+                console.log("this.props :", this.props);
+                console.log("props :", props);
+            }
+            moreMoreArrow();
+        }
+    },
 }
 
-aa();
-aaa.fu();
+arrowObj.arrow.moreArrow();
 
-function acd(callback) {
-    let a = 6;
-    callback();
+
+/*
+console.log("TEST OBJ RUN");
+testObj.arrow();
+testObj.func();
+
+console.log("THIS BREAKER OBJ CREATE");
+const thisBreaker = {
+    props: "breakerObj",
+    arrow: (() => {
+        const props = "breakerObj Arrows";
+        testObj.arrow(props);
+    })(),
+    func: testObj.func(),
 }
 
-acd(aa);
-acd(() => {
-    console.log(this.a);
-    console.log(a);
-});
-
-let asd = {
-    fu: acd,
-    fu2: aa,
-    aaa: aaa,
-    a: 7
-}
-
-asd.fu(aa);
-asd.fu(aaa.fu);
-asd.aaa.fu();
-asd.fu2();
+console.log("THIS BREAKER OBJ RUN");
+testObj.arrow(thisBreaker);
+testObj.func(thisBreaker);
+*/
